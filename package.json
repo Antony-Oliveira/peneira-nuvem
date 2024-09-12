@@ -1,0 +1,25 @@
+{
+  "name": "peneira-nuvem",
+  "description": "Projeto da matéria DESENVOLVIMENTO DE SOFTWARE EM NUVEM",
+  "version": "1.0.0",
+  "private": true,
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "author": "Google LLC",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "^4.17.1",
+    "axios": "^1.6.8",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^5.9.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
