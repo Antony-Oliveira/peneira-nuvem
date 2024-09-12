@@ -134,7 +134,7 @@
         }
 
         const buscarDados = () => {
-            axios.get(`http://localhost:3001/clientes`).then((response)=>{
+            axios.get(`/clientes`).then((response)=>{
                 
                 document.querySelector('#exibir').innerHTML = response.data.map((resp) => {
                     return( 
