@@ -105,10 +105,13 @@ router.get('/login-page', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/src', 'Login.html'));
 });
 
-router.get('/home', () => {
+router.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/src', 'index.html'));
 }); 
 
+router.get('/logout', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/src', 'logout.html'));
+});
 app.use('/', router)
 
 const port = parseInt(process.env.PORT) || 3001;
