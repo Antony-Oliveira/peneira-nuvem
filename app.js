@@ -102,13 +102,12 @@ router.get('/gestao', (req, res) => {
 });
 
 router.get('/login-page', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/src', 'login.html'));
+    res.sendFile(path.join(__dirname, 'client/src', 'Login.html'));
 });
 
-app.get('/', (req, res) => {
-    const name = process.env.NAME || 'World';
-    res.send(`Peneira!`);
-});
+router.get('/home', () => {
+    res.sendFile(path.join(__dirname, 'client/src', 'index.html'));
+}); 
 
 app.use('/', router)
 
