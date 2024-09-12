@@ -76,8 +76,33 @@ router.delete('/cliente/:id/delete', async function(req, res, next){
   }
 });
 
+router.post('/login', async function(req, res, next){
+    try {
+        const { email, password } = req.body;
+        const secret = 'D62ST92Y7A6V7K5C6W9ZU6W8KS3';
+        const db = await connect();
+        
+        const user = await db.collection("cliente").findOne({ email, password });
+        console.log(user);
+        
+        if (user) {
+            const token = jwt.sign({id: user._id}, secret, {expiresIn: '1h'});
+            res.status(200).json({user, token, msg:'Sucesso'});
+        } else {
+            res.status(401).json({ message: "Credenciais inválidas" });
+        }
+    } catch (ex) {
+        console.error(ex);
+        res.status(500).json({ erro: `${ex}` });
+    }
+});
+
 router.get('/gestao', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/src', 'gestao.html'));
+});
+
+router.get('/login-page', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/src', 'login.html'));
 });
 
 app.get('/', (req, res) => {
