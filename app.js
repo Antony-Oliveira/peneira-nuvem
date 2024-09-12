@@ -97,12 +97,32 @@ router.post('/login', async function(req, res, next){
     }
 });
 
+router.post('/cadastro', async function(req, res, next){
+    try {
+        const cliente = req.body;
+        cliente.position = 'indefinida';
+        const db  = await connect();
+        const query = await db.collection("cliente").findOne({email: cliente.email});
+        if(query){
+            return res.status(400).json({erro: "Usuário já cadastrado"});
+        }
+        res.status(201).json(await db.collection("cliente").insertOne(cliente));
+    } catch(ex) {
+        console.log(ex);
+        res.status(400).json({erro: `${ex}`});
+    }
+});
+
 router.get('/gestao', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/src', 'gestao.html'));
 });
 
 router.get('/login-page', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/src', 'Login.html'));
+});
+
+router.get('/cadastro', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/src', 'cadastro.html'));
 });
 
 router.get('/home', (req, res) => {

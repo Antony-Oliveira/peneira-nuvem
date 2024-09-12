@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style> 
+        html, body {
+            height: 100%;
+        }
+
+        .form-container {
+            max-width: 350px;
+            padding: 1rem;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8rem;
+        }
+
+        .success-message {
+            color: green;
+            font-size: 0.8rem;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 576px) {
+            .navbar-nav .nav-link {
+                padding: .5rem 1rem;
+            }
+        }
+    </style>
+    <title>Cadastre-se</title>
+</head>
+<body class="d-flex flex-column min-vh-100 bg-body-tertiary">
+    
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">Peneira Futebol Clube</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="btn btn-primary py-2" role="button" href="/login-page">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-secondary py-2" role="button" href="/cadastro">Cadastro</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="w-100 m-auto form-container">
+        <form id="signupForm">
+            <h1 class="mb-5 fw-normal">Crie sua conta</h1>
+
+            <div class="form-floating"> 
+                <input type="text" class="form-control" id="user" placeholder="User"/>
+                <label for="user">Usuário</label>
+            </div>
+
+            <div class="form-floating my-4"> 
+                <input type="email" class="form-control" id="email" placeholder="Email address"/>
+                <label for="email">Endereço de Email</label>
+            </div>
+
+            <div class="form-floating"> 
+                <input type="password" class="form-control" id="password" placeholder="Password"/>
+                <label for="password">Senha</label>
+            </div>
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+            <button type="submit" class="btn btn-primary w-100 py-2 my-3">Acessar</button>
+            <a href="./Login.html">Já possui login? Clique Aqui</a>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU7K9MQ6X6B5Z2F3s7vC6m5O1x5a8Tt5d4FGrJ12jvHwW6q8oD4LhG43RaD7aE" crossorigin="anonymous"></script>
+    <script>
+        const form = document.getElementById('signupForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const user = form.user.value;
+            const email = form.email.value;
+            const password = form.password.value;
+
+            if (!user || !email || !password) {
+                errorMessage.textContent = "Todos os campos são obrigatórios!";
+                return;
+            }
+
+            try {
+                const response = await axios.post('http://localhost:3001/cadastro', {
+                    user,
+                    email,
+                    password
+                });
+                console.log(response.data);
+                errorMessage.textContent = "";
+                successMessage.textContent = "Cadastro realizado com sucesso!";
+                form.reset();
+                setTimeout(() => {
+                   window.location.href = 'Login.html'
+                 }, 1000);
+            } catch (error) {
+                console.error('Erro ao cadastrar:', error);
+                if (error.response && error.response.status === 400) {
+                    errorMessage.textContent = "Email ou Usuário já cadastrado. Por favor, escolha outro e-mail de usuário.";
+                } else {
+                    errorMessage.textContent = "Erro ao cadastrar. Tente novamente mais tarde.";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
